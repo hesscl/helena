@@ -17,11 +17,12 @@ RUN apt-get update && apt-get install -y python-software-properties software-pro
     jq \
     python \
     python-pip \
+    aptitude \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     wget https://www.slimjet.com/chrome/download-chrome.php?file=lnx%2Fchrome64_64.0.3282.140.deb && \
-    apt-get update && apt-get install -y ./download-chrome.php?file=lnx%2Fchrome64_64.0.3282.140.deb && \
+    aptitude update && aptitude install -y ./download-chrome.php?file=lnx%2Fchrome64_64.0.3282.140.deb && \
     rm -rf /var/lib/apt/lists/*
 
 RUN wget https://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip && \
@@ -36,11 +37,14 @@ RUN mv chromedriver /usr/local/bin/chromedriver && \
     chmod 555 /usr/local/bin/chromedriver
 
 RUN pip install \
-    selenium \
-    requests \
+    setuptools \
+    setuptools-rust==0.10.3 \
+    urllib3==1.26.19 \
+    selenium==3.141.0 \
+    requests==2.22.0 \
     # last version to support Python 2.7: https://github.com/numpy/numpy/releases/tag/v1.16.4
     numpy==1.16.4 \
-    pyvirtualdisplay
+    pyvirtualdisplay==1.3.2 
 
 COPY ./src /src
 COPY ./src.pem /
